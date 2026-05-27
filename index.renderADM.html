@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -261,7 +262,7 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-</head>
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22index.renderADMv2.html%22%2C%22short_name%22%3A%22index.renderADMv2.html%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%22%2C%22background_color%22%3A%22%230f111a%22%2C%22theme_color%22%3A%22%233b82f6%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fapi.dicebear.com%2F7.x%2Fbottts%2Fsvg%3Fseed%3Dindex.renderADMv2.html%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fapi.dicebear.com%2F7.x%2Fbottts%2Fsvg%3Fseed%3Dindex.renderADMv2.html%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D"><meta name="theme-color" content="#3b82f6"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><script>let dP; window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); dP = e; const b = document.createElement('button'); b.innerHTML = 'Instalar App'; b.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99999;background:#3b82f6;color:#fff;border:none;padding:12px 24px;border-radius:50px;font-family:sans-serif;font-weight:600;font-size:14px;box-shadow:0 4px 20px rgba(59,130,246,0.4);cursor:pointer;'; b.onclick = async () => { if (!dP) return; dP.prompt(); const { outcome } = await dP.userChoice; if (outcome === 'accepted') b.remove(); dP = null; }; document.body.appendChild(b); }); const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase()); const isStandalone = () => ('standalone' in window.navigator) && window.navigator.standalone; if (isIos() && !isStandalone()) { const ib = document.createElement('div'); ib.innerHTML = 'Para instalar: <b>Compartilhar</b> > <b>Adicionar ao Ecrã Principal</b> <button style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#a1a1aa;font-size:16px;" onclick="this.parentElement.remove()">✕</button>'; ib.style.cssText = 'position:fixed;bottom:0;left:0;width:100%;background:#1c1e2b;color:#fff;padding:15px;text-align:center;z-index:99999;border-top:1px solid #2b2d3a;'; setTimeout(() => document.body.appendChild(ib), 2000); }</script></head>
 <body class="bg-gray-900 text-gray-100 min-h-screen relative">
 
     <!-- Toast Container (Container para notificações flutuantes) -->
@@ -1639,6 +1640,8 @@ async function deleteFromR2(fileUrl) {
                         }
                     }
                 });
+            }, (error) => {
+                if (error.code === 'failed-precondition') console.warn("Firestore: Índice para mensagens necessário. Link no console.");
             });
 
             // 2. Monitorar Ações em Vídeos (Ajustes e Aprovações)
@@ -3489,6 +3492,21 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                 }
             };
 
+            // Adiciona funcionalidade de Drag & Drop no modal de print para subir ajustes direto
+            const printContentArea = document.querySelector('#print-view-modal > div');
+            printContentArea.ondragover = (e) => { e.preventDefault(); printContentArea.classList.add('border-indigo-500'); };
+            printContentArea.ondragleave = () => { printContentArea.classList.remove('border-indigo-500'); };
+            printContentArea.ondrop = (e) => { 
+                e.preventDefault(); 
+                printContentArea.classList.remove('border-indigo-500'); 
+                const file = e.dataTransfer.files[0];
+                if(file && currentUploadAdj) {
+                    closePrintModal();
+                    window.openUploadDropzone(currentUploadAdj);
+                    handleDroppedFile(file);
+                }
+            };
+
             modal.classList.remove('hidden');
         };
 
@@ -3603,10 +3621,16 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                                                 <span class="text-xs font-bold text-yellow-200 bg-yellow-900/20 px-3 py-1 rounded border border-yellow-800/50">👤 ${clientName}</span>
                                             </div>
                                         </div>
-                                        <button class="btn-green-premium text-white px-6 py-3 rounded shadow-lg text-sm font-bold uppercase tracking-wider mark-adjusted transition-transform transform active:scale-95 flex items-center gap-2">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                                            Concluir Todos os Ajustes
-                                        </button>
+                                        <div class="flex flex-col sm:flex-row gap-3">
+                                            <button class="btn-gold px-6 py-3 rounded shadow-lg text-sm font-bold uppercase tracking-wider transition-transform transform active:scale-95 flex items-center gap-2 border border-yellow-300 open-upload-dropzone" data-adj-idx="${allAdjustments.length - 1}">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                                <span>Enviar Arquivo Ajustado</span>
+                                            </button>
+                                            <button class="btn-green-premium text-white px-6 py-3 rounded shadow-lg text-sm font-bold uppercase tracking-wider mark-adjusted transition-transform transform active:scale-95 flex items-center gap-2">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                                Concluir Todos os Ajustes
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -3635,8 +3659,15 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                                     showToast("Marcado como ajustado"); 
                                 }); 
                             });
+
+                            el.querySelector('.open-upload-dropzone').addEventListener('click', () => {
+                                window.openUploadDropzone(adj);
+                            });
+
                             container.appendChild(el);
                         });
+                    }, (error) => {
+                        if (error.code === 'failed-precondition') console.warn("Firestore: Índice para ajustes necessário. Link no console.");
                     });
                  } catch (e) {
                     console.error("ERRO AJUSTES:", e);
@@ -3681,6 +3712,8 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                         el.addEventListener('click', () => openApprovedDetails('project', { id: d.id, data: pData, clientId, clientName })); 
                         containerProjetos.appendChild(el);
                     }
+                }, (error) => {
+                    if (error.code === 'failed-precondition') console.warn("Firestore: Índice para projetos aprovados necessário.");
                 });
             } catch (e) {
                 console.error("ERRO APROVADOS (Projetos):", e);
@@ -3722,6 +3755,8 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                         el.addEventListener('click', () => openApprovedDetails('client_videos', { clientId: key, clientName: val.name, videos: val.videos })); 
                         containerVideos.appendChild(el);
                     });
+                }, (error) => {
+                    if (error.code === 'failed-precondition') console.warn("Firestore: Índice para vídeos aprovados necessário.");
                 });
             } catch (e) {
                 console.error("ERRO APROVADOS (Vídeos):", e);
@@ -4365,7 +4400,107 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                 }, 100);
             });
         }
+    // --- SISTEMA DE UPLOAD DRAG & DROP PARA AJUSTES ---
+        let currentUploadAdj = null;
+        const dropzoneModal = document.getElementById('upload-dropzone-modal');
+        const dropzone = document.getElementById('dropzone-area');
+        const dropzoneInput = document.getElementById('dropzone-input');
+        const dropzoneStatus = document.getElementById('dropzone-status-card');
+
+        window.openUploadDropzone = (adj) => {
+            currentUploadAdj = adj;
+            dropzoneStatus.classList.add('hidden');
+            dropzoneModal.classList.remove('hidden');
+        };
+
+        const handleDroppedFile = async (file) => {
+            if (!file || !currentUploadAdj) return;
+            
+            dropzoneStatus.classList.remove('hidden');
+            document.getElementById('dropzone-filename').textContent = file.name;
+            const bar = document.getElementById('dropzone-progress-fill');
+            const percText = document.getElementById('dropzone-percentage');
+            
+            bar.style.width = '10%'; percText.textContent = '10%';
+
+            try {
+                const clientId = currentUploadAdj.path[1];
+                const projectId = currentUploadAdj.path[3];
+                
+                // 1. Calcular Numeração
+                const videosRef = collection(db, 'clients', clientId, 'projects', projectId, 'videos');
+                const vSnap = await getDocs(videosRef);
+                const adjustedCount = vSnap.docs.filter(v => (v.data().videoName || '').toLowerCase().includes('ajustado')).length;
+                const nextNum = (adjustedCount + 1).toString().padStart(2, '0');
+                const finalName = `Ajustado ${nextNum}`;
+
+                bar.style.width = '40%'; percText.textContent = '40%';
+
+                // 2. Upload para R2
+                const folderPath = `/${ROOT_FOLDER_NAME}/Clientes/${clientId}/${projectId}/Ajustados`;
+                const fileUrl = await uploadToR2(file, folderPath);
+
+                bar.style.width = '80%'; percText.textContent = '80%';
+
+                // 3. Salvar no Firestore
+                await addDoc(videosRef, {
+                    videoName: finalName,
+                    videoUrl: fileUrl,
+                    groupName: 'Geral',
+                    videoStatus: 'pending',
+                    createdAt: serverTimestamp(),
+                    orderNumber: Date.now()
+                });
+
+                bar.style.width = '100%'; percText.textContent = '100%';
+                showToast(`${finalName} enviado com sucesso!`);
+                setTimeout(() => dropzoneModal.classList.add('hidden'), 800);
+            } catch (error) {
+                console.error(error);
+                showToast("Erro ao subir arquivo.", "error");
+            }
+        };
+
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('border-yellow-500', 'bg-black/40'); });
+        dropzone.addEventListener('dragleave', () => { dropzone.classList.remove('border-yellow-500', 'bg-black/40'); });
+        dropzone.addEventListener('drop', (e) => { e.preventDefault(); dropzone.classList.remove('border-yellow-500', 'bg-black/40'); handleDroppedFile(e.dataTransfer.files[0]); });
+        dropzone.addEventListener('click', () => dropzoneInput.click());
+        dropzoneInput.addEventListener('change', (e) => handleDroppedFile(e.target.files[0]));
+
     </script>
+
+    <!-- Modal Dropzone (Premium) -->
+    <div id="upload-dropzone-modal" class="hidden fixed inset-0 bg-black/95 z-[500] flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-leather w-full max-w-xl rounded-2xl shadow-2xl border-4 border-double border-yellow-700/50 relative p-8 flex flex-col overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 gold-gradient"></div>
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-bold text-yellow-500 font-serif-premium tracking-wide">Enviar Arquivo Ajustado</h3>
+                <button onclick="document.getElementById('upload-dropzone-modal').classList.add('hidden')" class="text-yellow-600 hover:text-red-500 transition-all">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div id="dropzone-area" class="border-4 border-dashed border-yellow-800/30 rounded-3xl p-16 flex flex-col items-center justify-center bg-black/20 hover:bg-black/40 hover:border-yellow-600 transition-all cursor-pointer group mb-8">
+                <div class="w-24 h-24 bg-yellow-900/20 rounded-full flex items-center justify-center mb-6 border border-yellow-700/30 group-hover:scale-110 transition-transform shadow-inner">
+                    <svg class="w-12 h-12 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                </div>
+                <p class="text-white font-bold text-xl mb-1 font-serif-premium tracking-tight">Arraste o vídeo finalizado aqui</p>
+                <p class="text-gray-500 text-sm italic font-medium">Ou clique para navegar nas pastas</p>
+                <input type="file" id="dropzone-input" class="hidden" accept="video/*">
+            </div>
+
+            <div id="dropzone-status-card" class="hidden bg-black/40 p-5 rounded-2xl border border-yellow-900/30 shadow-inner">
+                <div class="flex justify-between text-xs text-yellow-500 mb-3 uppercase font-black tracking-widest">
+                    <span id="dropzone-filename" class="truncate max-w-[300px]">processando...</span>
+                    <span id="dropzone-percentage">0%</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2.5 overflow-hidden">
+                    <div id="dropzone-progress-fill" class="bg-gradient-to-r from-yellow-400 to-yellow-600 h-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="print-view-modal" class="hidden fixed inset-0 z-[400] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300">
         <button onclick="closePrintModal()" class="absolute top-4 right-4 text-white hover:text-yellow-500 transition transform hover:scale-110 z-50">
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
