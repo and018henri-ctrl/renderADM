@@ -303,7 +303,9 @@
 
 @media(max-width:700px){#admin-panel-content{flex-direction:column}#admin-panel-content>aside{width:100%;min-height:0;border-right:0;border-bottom:1px solid #715a32}#admin-sidebar-header{padding:12px;flex-direction:row;justify-content:center;gap:13px}#admin-sidebar-header>span:first-of-type{font-size:24px}#admin-panel-content>aside>nav{display:flex;flex:0 0 auto;gap:7px;margin:8px 0;padding:4px 12px;max-width:100%;overflow-x:auto;overflow-y:hidden}#admin-panel-content>aside>nav .admin-tab-button{flex:0 0 auto;width:auto;white-space:nowrap;margin:0;font-size:12px;min-height:44px}#admin-panel-content>aside>div:last-child{padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}#admin-panel-content>aside>div:last-child>*{margin:0}#admin-panel-content>aside .rw-r2-meter{grid-column:1/-1;margin:0;padding:12px}#admin-panel-content>aside #logout-button,#admin-panel-content>aside #enable-admin-notifications-btn{font-size:10px;letter-spacing:.04em;min-height:44px}#admin-panel-content>main{width:100%;min-width:0;padding:10px}.render-files{padding:12px}.rw-filters{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.rw-input{min-width:0}.rw-heading .rw-btn{white-space:normal}.r2-segment-grid{grid-template-columns:minmax(0,1fr)}}
 </style>
-</head>
+<style>
+.de-overlay{position:fixed;inset:0;background:#000c;z-index:1000;display:grid;place-items:center;padding:16px}.de-panel{width:min(760px,100%);max-height:94dvh;overflow:auto;background:#132033;color:#eef2f7;border:1px solid #b69b69;border-radius:18px;padding:24px}.de-panel header,.de-panel footer,.de-columns{display:flex;gap:12px;justify-content:space-between;align-items:center}.de-panel h2{font-size:24px;margin:4px 0}.de-panel p{font-size:13px;line-height:1.6;color:#b9c6d8;margin:14px 0}.de-panel label{display:block;margin:14px 0;flex:1}.de-panel input,.de-panel textarea,.de-panel select{display:block;background:#0c1625;color:white;border:1px solid #506178;border-radius:8px;padding:10px;width:100%;margin-top:6px}.de-panel button{background:#2c4058;color:white;border-radius:8px;padding:10px 14px;cursor:pointer}.de-panel button:disabled{opacity:.4;cursor:wait}.de-panel [data-save]{background:#d7b77c;color:#142033}.de-panel video{width:100%;max-height:380px;background:black}.de-slide{display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid #ffffff20}.de-slide img{width:50px;height:60px;object-fit:contain}.de-slide span{flex:1;min-width:0;overflow-wrap:anywhere;font-size:12px}@media(max-width:540px){.de-panel{padding:16px}.de-columns{flex-wrap:wrap}.de-columns label{flex-basis:100%}.de-slide button{padding:8px}}
+</style><style>.folder-breadcrumbs{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:14px 0 20px}.folder-breadcrumbs button{background:#172638;border:1px solid #35465d;color:#b9cadc;border-radius:8px;padding:10px 13px;font-size:12px;max-width:100%;overflow-wrap:anywhere;min-height:42px}.folder-breadcrumbs button[aria-current="page"]{border-color:#c6a571;color:#efd7ae}.folder-breadcrumbs button+button:before{content:'›';margin-right:9px;color:#9aadc3}.folder-open-files{grid-column:1/-1;text-align:left;border:1px solid #365675;border-radius:12px;padding:18px;background:#14273c;color:#daebfc;font-size:14px}.r2-pinned-destination{font-size:12px;line-height:1.5;color:#e0c596;margin:9px 0;overflow-wrap:anywhere}#form-manage-subfolders{align-items:end;flex-wrap:wrap}#new-folder-parent{max-width:100%;min-width:180px}#subfolders-list-container{margin-top:16px}.rw-video-body .rw-inline select{width:100%;margin-top:7px;min-width:0}.rw-field{min-width:0}@media(max-width:650px){#form-manage-subfolders>*{width:100%;max-width:100%}.rw-folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.rw-folder strong{font-size:13px;overflow-wrap:anywhere}.rw-folder small{font-size:10px}.folder-breadcrumbs{gap:5px}.folder-breadcrumbs button{font-size:11px;padding:9px}.rw-form-grid{grid-template-columns:1fr!important}.rw-input,select{max-width:100%}}</style></head>
 <body class="bg-gray-900 text-gray-100 min-h-screen relative">
 
 
@@ -1236,18 +1238,18 @@
 
                     <section class="render-workspace">
                         <div class="rw-heading"><div><span class="rw-eyebrow">Entrega organizada</span><h4>Pastas do projeto</h4><p>Escolha uma pasta e envie todos os arquivos dela em um único lote.</p></div></div>
-                        <form id="form-manage-subfolders" class="rw-inline"><input type="text" id="new-subfolder-name" class="rw-input" placeholder="Nova pasta: Depoimentos, Reels, Fotos…" maxlength="80" required aria-label="Nome da nova pasta"><button type="submit" class="rw-btn">+ Criar pasta</button></form>
+                        <nav id="admin-folder-breadcrumbs" class="folder-breadcrumbs" aria-label="Caminho da pasta"></nav><form id="form-manage-subfolders" class="rw-inline"><label class="rw-field">Criar dentro de<select id="new-folder-parent" class="rw-input" aria-label="Pasta pai"><option value="">Raiz do projeto</option></select></label><input type="text" id="new-subfolder-name" class="rw-input" placeholder="Nova pasta: Depoimentos, Reels, Fotos…" maxlength="80" required aria-label="Nome da nova pasta"><button type="submit" class="rw-btn">+ Criar pasta</button></form>
                         <div id="subfolders-list-container" class="rw-folder-grid"></div>
                         <form id="form-add-video-to-project" class="rw-upload-panel">
-                            <h4 class="rw-section-title">Adicionar arquivos</h4><div class="rw-field" style="margin:14px 0"><label for="r2-upload-selected">Armazenamento para este envio</label><select id="r2-upload-selected" class="rw-input" data-r2-selector></select></div><p class="rw-destination">Destino: <strong id="upload-destination-label">Geral</strong></p>
-                            <div class="rw-form-grid"><div class="rw-field"><label for="new-video-group">Pasta de destino</label><select id="new-video-group" required><option value="Geral">Geral</option></select></div><div class="rw-field"><label for="new-video-name">Nome ou prefixo (opcional)</label><input id="new-video-name" class="rw-input" placeholder="Opcional: nome do vídeo" maxlength="180"></div></div>
-                            <div id="bulk-dropzone" class="rw-dropzone"><p>Arraste seus arquivos para cá</p><span class="rw-hint">Selecione vários vídeos, fotos ou documentos. Cada arquivo mantém seu nome.</span><div class="rw-inline"><label for="file-upload-input" class="rw-btn">Selecionar arquivos</label><input id="file-upload-input" type="file" class="hidden" multiple><label for="folder-upload-input" class="rw-btn rw-btn-secondary">Selecionar pasta do computador</label><input id="folder-upload-input" type="file" class="hidden" multiple webkitdirectory></div><p class="rw-hint" style="font-size:11px;margin:12px 0 0">Ao selecionar uma pasta do computador, todos os arquivos serão enviados para o destino escolhido acima.</p></div>
+                            <h4 class="rw-section-title">Adicionar arquivos</h4><div class="rw-field" style="margin:14px 0"><label for="r2-upload-selected">Armazenamento para este envio</label><select id="r2-upload-selected" class="rw-input" data-r2-selector></select></div><p class="rw-destination">Destino: <strong id="upload-destination-label">Arquivos do projeto</strong></p>
+                            <div class="rw-form-grid"><div class="rw-field"><label for="new-video-group">Pasta de destino</label><select id="new-video-group"><option value="">Arquivos do projeto</option></select></div><div class="rw-field"><label for="new-video-name">Nome ou prefixo (opcional)</label><input id="new-video-name" class="rw-input" placeholder="Opcional: nome do vídeo" maxlength="180"></div></div>
+                            <div id="bulk-dropzone" class="rw-dropzone"><p>Arraste seus arquivos para cá</p><span class="rw-hint">Selecione vários vídeos, fotos ou documentos. Cada arquivo mantém seu nome.</span><div class="rw-inline"><label for="file-upload-input" class="rw-btn">Selecionar arquivos</label><input id="file-upload-input" type="file" class="hidden" multiple><label for="folder-upload-input" class="rw-btn rw-btn-secondary">Selecionar pasta do computador</label><input id="folder-upload-input" type="file" class="hidden" multiple webkitdirectory></div><p class="rw-hint" style="font-size:11px;margin:12px 0 0">Ao selecionar uma pasta do computador, todos os arquivos serão enviados para o destino escolhido acima. Para carrosséis, envie a primeira imagem e abra “Post / carrossel / feed” para adicionar as demais páginas, editar a legenda e organizar a grade.</p></div>
                             <div class="rw-file-toolbar"><span id="bulk-queue-summary">Nenhum arquivo selecionado</span><button id="bulk-clear-btn" type="button" class="rw-btn rw-btn-secondary" disabled>Limpar seleção</button></div><div id="bulk-file-list" class="rw-queue" aria-live="polite"></div>
                             <div class="rw-field" style="margin-top:16px"><label for="new-video-url">Ou adicione um link de vídeo / arquivo</label><input id="new-video-url" type="url" class="rw-input" placeholder="https://…"></div>
                             <div id="upload-progress-container" class="rw-progress hidden" role="status"><span id="upload-status-text">Preparando…</span><div class="rw-progress-track"><div id="upload-progress-bar" class="rw-progress-fill" style="width:0%"></div></div><p class="rw-hint" style="margin-top:7px;font-size:11px">O progresso avança a cada arquivo enviado e salvo no projeto.</p></div>
                             <button id="btn-save-video" type="submit" class="rw-btn rw-btn-block">Salvar link no projeto</button><button id="bulk-cancel-btn" type="button" class="rw-btn rw-btn-secondary rw-btn-block hidden">Parar após o arquivo atual</button>
                         </form>
-                        <h4 id="folder-video-summary" class="rw-video-heading">Geral · 0 arquivo(s)</h4><p id="folder-empty-state" class="rw-empty hidden">Esta pasta ainda está vazia. Selecione os arquivos acima para começar.</p>
+                        <h4 id="folder-video-summary" class="rw-video-heading">Arquivos do projeto · 0 arquivo(s)</h4><p id="folder-empty-state" class="rw-empty hidden">Esta pasta ainda está vazia. Selecione os arquivos acima para começar.</p>
                         <div id="videos-list-container"></div>
                     </section>
 
@@ -1672,12 +1674,14 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
     // Os dois buckets conhecidos sempre entram na medição, sem consulta à raiz da conta.
     for(const profile of r2Profiles)if(profile.accountId===R2_ACCOUNT_ID)profile.extraBuckets=[...new Set([...(profile.extraBuckets||[]),...ORIGINAL_ACCOUNT_BUCKETS])].filter(bucket=>bucket!==profile.bucket);
     let selectedStorageId=renderLocalStorage.getItem(R2_SELECTED_KEY)||r2Profiles.find(p=>!p.archived)?.id||r2Profiles[0].id;
+    let r2ExplicitSelection=!!renderLocalStorage.getItem(R2_SELECTED_KEY);
+    let designUploadBusy=false;
     const storageClients=new Map(),storageUsage=new Map();
     const storageMutationRevision=new Map();
     function invalidateStorageMeasurement(accountId){storageMutationRevision.set(accountId,(storageMutationRevision.get(accountId)||0)+1);storageUsage.delete(accountId);renderStorageMeters();}
     let r2ActiveUploads=0;
     let editingStorageId=null;
-    function selectedStorage(){return r2Profiles.find(p=>p.id===selectedStorageId&&!p.archived)||r2Profiles.find(p=>!p.archived)||r2Profiles[0];}
+    function selectedStorage(){return r2Profiles.find(p=>p.id===selectedStorageId&&!p.archived)||{id:selectedStorageId,name:'Destino indisponível — selecione o R2',bucket:'Não selecionado',accountId:'',extraBuckets:[],aliases:[],unavailable:true};}
     function storageConnectionMessage(error,profile=selectedStorage()){
         let message=String(error?.message||error||'Falha ao consultar o armazenamento.');
         for(const saved of [...r2Profiles,profile].filter(Boolean))for(const key of [saved.accessKeyId,saved.secretAccessKey])if(key)message=message.split(key).join('[chave protegida]');
@@ -1850,16 +1854,17 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
     }
     function populateStorageSelectors(){
         for(const select of document.querySelectorAll('[data-r2-selector]')){
-            select.replaceChildren();for(const profile of r2Profiles.filter(p=>!p.archived))select.add(new Option(`${profile.name} · ${profile.bucket}`,profile.id));select.value=selectedStorage().id;
+            select.replaceChildren();for(const profile of r2Profiles.filter(p=>!p.archived))select.add(new Option(`${profile.name} · ${profile.bucket}`,profile.id));if(selectedStorage().unavailable){const missing=new Option('Destino salvo indisponível — escolha um R2',selectedStorageId);missing.disabled=true;select.add(missing);}select.value=selectedStorageId;
         }
         const inventorySelect=document.getElementById('files-storage');
         if(inventorySelect){const previous=inventorySelect.value;inventorySelect.replaceChildren(new Option('Todos os armazenamentos',''));for(const profile of r2Profiles)inventorySelect.add(new Option(profile.name,profile.id));inventorySelect.value=r2Profiles.some(p=>p.id===previous)?previous:'';}
+        for(const select of document.querySelectorAll('[data-r2-selector]')){let label=select.nextElementSibling;if(!label?.classList.contains('r2-pinned-destination')){label=document.createElement('p');label.className='r2-pinned-destination';label.setAttribute('role','status');select.after(label);}const chosen=selectedStorage();label.textContent=chosen.unavailable?'Escolha um destino disponível. O envio não será redirecionado.':`Destino fixado: ${chosen.name} / ${chosen.bucket}`;}
         renderStorageProfileList();renderStorageMeters();
     }
     function changeSelectedStorage(id){
-        if(bulkUploading||adjustmentUploadBusy||r2ActiveUploads||document.getElementById('btn-save-edit-video').disabled){populateStorageSelectors();return showToast('Aguarde o envio atual terminar para trocar o armazenamento.','info');}
+        if(designUploadBusy||bulkUploading||adjustmentUploadBusy||r2ActiveUploads||document.getElementById('btn-save-edit-video').disabled){populateStorageSelectors();return showToast('Aguarde o envio atual terminar para trocar o armazenamento.','info');}
         if(!r2Profiles.some(p=>p.id===id&&!p.archived))return;
-        selectedStorageId=id;renderLocalStorage.setItem(R2_SELECTED_KEY,id);populateStorageSelectors();savePrivateStorageProfiles().catch(()=>{document.getElementById('r2-settings-message').textContent='Escolha salva neste navegador. A sincronização privada está indisponível; tente salvar a conexão novamente.';});refreshStorageUsage();
+        selectedStorageId=id;r2ExplicitSelection=true;renderLocalStorage.setItem(R2_SELECTED_KEY,id);populateStorageSelectors();savePrivateStorageProfiles().catch(()=>{document.getElementById('r2-settings-message').textContent='Escolha salva neste navegador. A sincronização privada está indisponível; tente salvar a conexão novamente.';});refreshStorageUsage();
     }
     async function loadPrivateStorageProfiles(){
         const snapshot=await getDocFromServer(doc(db,'siteConfig',R2_CONNECTION_DOCUMENT));
@@ -1875,7 +1880,8 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
         }
         const remaining=r2Profiles.filter(local=>!profiles.some(remote=>remote.id===local.id||(remote.accountId===local.accountId&&remote.bucket===local.bucket)));
         r2Profiles=[...profiles,...remaining];
-        if(profiles.some(profile=>profile.id===data.selectedStorageId&&!profile.archived))selectedStorageId=data.selectedStorageId;
+        // A saved local choice always wins over shared remote defaults. Missing destinations require an explicit choice.
+        if(!r2ExplicitSelection&&profiles.some(profile=>profile.id===data.selectedStorageId&&!profile.archived))selectedStorageId=data.selectedStorageId;
         persistStorageProfiles();
         document.getElementById('r2-settings-message').textContent='Conexão privada recuperada. O uso será conferido diretamente no R2.';
         return true;
@@ -1905,7 +1911,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
             const title=document.createElement('strong');title.textContent=profile.name;const detail=document.createElement('p');detail.className='rw-hint';detail.textContent=`Bucket: ${profile.bucket} · Conta: ${profile.accountId.slice(0,8)}…${profile.archived?' · Somente arquivos anteriores':''}`;
             const actions=document.createElement('div');actions.className='rw-inline';
             if(!profile.archived){const choose=document.createElement('button');choose.type='button';choose.className='rw-btn rw-btn-secondary';choose.textContent=profile.id===selectedStorage().id?'Selecionado para envio':'Usar para os próximos envios';choose.onclick=()=>changeSelectedStorage(profile.id);actions.append(choose);}
-            const edit=document.createElement('button');edit.type='button';edit.className='rw-btn rw-btn-secondary';edit.textContent='Editar conexão';edit.onclick=()=>editStorageProfile(profile.id);actions.append(edit);
+                        const edit=document.createElement('button');edit.type='button';edit.className='rw-btn rw-btn-secondary';edit.textContent='Editar conexão';edit.onclick=()=>editStorageProfile(profile.id);actions.append(edit);
             card.append(title,detail,actions);list.append(card);
         }
     }
@@ -1947,7 +1953,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
             else if(old)r2Profiles=r2Profiles.map(p=>p.id===id?profile:p);else r2Profiles.push(profile);
             // O limite é da conta inteira, compartilhado por seus buckets cadastrados.
             r2Profiles=r2Profiles.map(p=>p.accountId===accountId?{...p,limitBytes:profile.limitBytes,capacityBytes:profile.capacityBytes}:p);
-            if(!profile.archived)selectedStorageId=id;await savePrivateStorageProfiles();persistStorageProfiles();document.getElementById('r2-profile-editor').classList.add('hidden');
+            await savePrivateStorageProfiles();persistStorageProfiles();document.getElementById('r2-profile-editor').classList.add('hidden');
             showToast('Conexão salva na configuração privada do administrador. Os próximos envios usarão o bucket selecionado.');refreshStorageUsage();
         }catch(error){showToast('Não foi possível salvar: '+storageConnectionMessage(error),'error');}
     });
@@ -1965,7 +1971,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
             if(!/^[a-f0-9]{32}$/i.test(imported.accountId)||!imported.bucket||!imported.accessKeyId||!imported.secretAccessKey)throw new Error('Não encontrei uma conexão completa neste arquivo. Use o HTML administrativo anterior ou preencha as chaves em Editar conexão.');
             if(new URL(imported.publicDomain).protocol!=='https:')throw new Error('A URL pública da conexão deve usar HTTPS.');
             const existing=r2Profiles.find(p=>p.accountId===imported.accountId&&p.bucket===imported.bucket),profile={...(existing||ORIGINAL_R2_PROFILE),...imported,id:existing?.id||'r2-import-'+newFileId(),name:existing?.name||'R2 importado',archived:false,endpoint:`https://${imported.accountId}.r2.cloudflarestorage.com`,aliases:[...new Set([...(existing?.aliases||[]),...(existing?.publicDomain&&existing.publicDomain!==imported.publicDomain?[existing.publicDomain]:[])])]};
-            r2Profiles=existing?r2Profiles.map(p=>p.id===existing.id?profile:p):[...r2Profiles,profile];selectedStorageId=profile.id;persistStorageProfiles();renderStorageProfileList();await refreshStorageUsage();
+            r2Profiles=existing?r2Profiles.map(p=>p.id===existing.id?profile:p):[...r2Profiles,profile];persistStorageProfiles();renderStorageProfileList();await refreshStorageUsage();
             await savePrivateStorageProfiles();showToast('Conexão recuperada e salva na configuração privada. O HTML foi lido localmente e não foi enviado.');
         }catch(error){showToast(error.message||'Não foi possível importar a conexão.','error');}
         finally{event.target.value='';}
@@ -2005,12 +2011,13 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
     function newFileId() { return crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${crypto.getRandomValues(new Uint32Array(2)).join('-')}`; }
 
     function throwIfUploadCancelled(signal){if(signal?.aborted)throw Object.assign(new Error('Envio cancelado. O vídeo anterior continua disponível para o cliente.'),{name:'AbortError'});}
-    async function uploadToR2(file,folderPath,{onProgress=()=>{},signal}={}) {
+    async function uploadToR2(file,folderPath,{onProgress=()=>{},signal,profile:uploadProfile}={}) {
         if(!file||!file.size)throw new Error('O arquivo está vazio.');
         if(file.size>5*1024**3)throw new Error('Envie arquivos de até 5 GB por vídeo.');
         const cleanPath=folderPath.replace(/^\/+|\/+$/g,'');
         if(!cleanPath.startsWith(ROOT_FOLDER_NAME+'/'))throw new Error('Pasta de destino inválida.');
-        const profile={...selectedStorage()},fileName=safePathPart(file.name).replace(/\s+/g,'_'),key=`${cleanPath}/${newFileId()}__${fileName}`;
+        const profile={...(uploadProfile||selectedStorage())};if(profile.unavailable||!profile.bucket||!profile.accessKeyId||!profile.secretAccessKey)throw new Error('O R2 selecionado está indisponível. Escolha e configure o destino antes de enviar; nenhum outro R2 será usado automaticamente.');
+        const fileName=safePathPart(file.name).replace(/\s+/g,'_'),key=`${cleanPath}/${newFileId()}__${fileName}`;
         let reservation,heartbeat,unwatch=()=>{},sendError;
         throwIfUploadCancelled(signal);r2ActiveUploads++;
         try{
@@ -2088,8 +2095,26 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
             throw new Error('O histórico deste vídeo está muito grande. Remova prints antigos antes de continuar.');
         }
     }
+
+    // Design deliveries share the existing approval/version collection for backwards compatibility.
+
+    function projectFolderPaths(project){
+        const result=new Set();for(const raw of Array.isArray(project?.subfolders)?project.subfolders:[]){if(typeof raw!=='string')continue;const parts=raw.split('/').filter(Boolean);for(let i=1;i<=parts.length;i++)result.add(parts.slice(0,i).join('/'));}return [...result];
+    }
+    function deliveryFolder(data,paths){return paths.includes(data.groupName)?data.groupName:'';}
+    function folderParent(path){return String(path||'').split('/').slice(0,-1).join('/');}
+    function folderLeaf(path){return String(path||'').split('/').pop()||'Arquivos do projeto';}
+    function folderStoragePath(path){return path?path.split('/').map(part=>part.normalize('NFC').replace(/[\\\u0000-\u001f]/g,'_')).join('/'):'_raiz';}
+
+    function deliveryIsImage(data){
+        if(data.mediaType==='image'||String(data.contentType||'').startsWith('image/'))return true;
+        try{return /\.(png|jpe?g|webp|gif|avif)$/i.test(new URL(data.videoUrl).pathname);}catch{return false;}
+    }
+    function deliverySlides(data){
+        return [data.videoUrl,...(Array.isArray(data.designSlides)?data.designSlides:[])].filter(url=>{try{return ['https:','http:'].includes(new URL(url).protocol);}catch{return false;}});
+    }
     async function replaceVideoSource(ref, {file = null, url = '', name, reason = 'manual', expectedUrl,reviewedAdjustments,onProgress=()=>{},signal} = {}) {
-        const parts = ref.path.split('/');
+        const parts = ref.path.split('/');const replacementStorage={...selectedStorage()};
         if (parts.length !== 6 || parts[0] !== 'clients' || parts[2] !== 'projects' || parts[4] !== 'videos') throw new Error('Vídeo inválido.');
         const clientRef = doc(db, 'clients', parts[1]);
         const projectRef = doc(db, 'clients', parts[1], 'projects', parts[3]);
@@ -2100,10 +2125,10 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
         const before = initial.data();
         const reviewed=Array.isArray(reviewedAdjustments)?reviewedAdjustments:(Array.isArray(before.adjustments)?before.adjustments:[]);
         if (expectedUrl && before.videoUrl !== expectedUrl) throw new Error('Este vídeo já recebeu outra versão. Atualize a lista de ajustes.');
-        const group = before.groupName || 'Geral';
+        const group = before.groupName || '';
         let uploadedUrl = null;
         try {
-            if (file) uploadedUrl = await uploadToR2(file, `/${ROOT_FOLDER_NAME}/Clientes/${parts[1]}/${parts[3]}/${safePathPart(group)}`,{onProgress,signal});
+            if (file) uploadedUrl = await uploadToR2(file, `/${ROOT_FOLDER_NAME}/Clientes/${parts[1]}/${parts[3]}/${folderStoragePath(group)}`,{onProgress,signal,profile:replacementStorage});
             throwIfUploadCancelled(signal);
             const finalUrl = uploadedUrl || validFileUrl(url || before.videoUrl);
             onProgress({phase:'publishing'});
@@ -2113,7 +2138,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
                 const fresh = await transaction.get(ref);
                 if (!clientSnap.exists() || !projectSnap.exists() || !fresh.exists()) throw new Error('O cliente, projeto ou vídeo foi removido durante o envio.');
                 const data = fresh.data();
-                if (data.videoUrl !== before.videoUrl || (data.groupName || 'Geral') !== group || (Number(data.videoVersion)||1)!==(Number(before.videoVersion)||1)) throw new Error('Outro administrador alterou este vídeo. Atualize a lista e tente novamente.');
+                if (data.videoUrl !== before.videoUrl || (data.groupName || '') !== group || (Number(data.videoVersion)||1)!==(Number(before.videoVersion)||1)) throw new Error('Outro administrador alterou este vídeo. Atualize a lista e tente novamente.');
                 const updates = {lastUpdated: serverTimestamp()};
                 if (name !== undefined) updates.videoName = String(name).trim() || data.videoName || file?.name || 'Vídeo';
                 if (finalUrl !== data.videoUrl) {
@@ -2122,14 +2147,14 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
                     history.push({
                         videoUrl: data.videoUrl || '', videoName: data.videoName || 'Vídeo',
                         originalFileName: data.originalFileName || '', fileSize: data.fileSize ?? null,
-                        contentType: data.contentType || '', groupName: group,
+                        contentType: data.contentType || '', groupName: group, designSlides:data.designSlides||[],caption:data.caption||'',coverTime:Number(data.coverTime)||0,
                         version: Number(data.videoVersion) || 1, replacedAt: at, reason
                     });
                     Object.assign(updates, {
                         videoUrl: finalUrl, versionHistory: history,
                         videoVersion: (Number(data.videoVersion) || 1) + 1,
                         originalFileName: file?.name || '', fileSize: file?.size ?? null,
-                        contentType: file?.type || '',
+                        contentType: file?.type || '', mediaType:file?.type?.startsWith('image/')?'image':(/\.(png|jpe?g|webp|gif|avif)(?:[?#]|$)/i.test(finalUrl)?'image':'video'), coverTime:0,
                         adjustments: resolveReviewedAdjustments(data,reviewed,at), clientRating: deleteField(), clientFeedback: deleteField()
                     });
                     updates.videoStatus=updates.adjustments.some(adjustment=>adjustment&&!adjustment.resolvedAt)?'adjusting':'adjusted';
@@ -2166,7 +2191,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
     }
 
     // Estado de navegação e fila de envios. O destino é capturado no início do lote.
-    let activeAdminFolder = 'Geral';
+    let activeAdminFolder = '';
     let adminProjectFolders = [];
     let adminFolderCounts = new Map();
     let adminVideoCache = null;
@@ -2210,7 +2235,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
         document.getElementById('bulk-queue-summary').textContent = bulkQueue.length ? `${bulkQueue.length} arquivo(s) · ${fileSizeLabel(bulkQueue.reduce((n,q)=>n+q.file.size,0))}` : 'Nenhum arquivo selecionado';
         document.getElementById('new-video-url').disabled = bulkQueue.length > 0 || bulkUploading;
         document.getElementById('new-video-name').placeholder = bulkQueue.length > 1 ? 'Opcional: prefixo para os nomes dos arquivos' : 'Opcional: nome do vídeo';
-        document.getElementById('btn-save-video').textContent = bulkUploading ? 'Enviando arquivos…' : count ? `Enviar ${count} arquivo(s) para ${activeAdminFolder}` : 'Salvar link no projeto';
+        document.getElementById('btn-save-video').textContent = bulkUploading ? 'Enviando arquivos…' : count ? `Enviar ${count} arquivo(s) para ${activeAdminFolder||'o projeto'}` : 'Salvar link no projeto';
         document.getElementById('bulk-clear-btn').disabled = bulkUploading || !bulkQueue.length;
     }
     function addFilesToQueue(files) {
@@ -2223,64 +2248,50 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
         if (skipped) showToast(`${skipped} arquivo(s) vazio(s) ou oculto(s) ignorado(s).`,'info');
         renderBulkQueue();
     }
-    function setAdminFolder(name) {
-        if (bulkUploading) return;
-        const allowed = ['Geral',...adminProjectFolders];
-        activeAdminFolder = allowed.includes(name) ? name : 'Geral';
-        document.getElementById('new-video-group').value = activeAdminFolder;
-        document.getElementById('upload-destination-label').textContent = activeAdminFolder;
-        document.querySelectorAll('[data-rw-folder]').forEach(btn=>{btn.classList.toggle('is-active',btn.dataset.rwFolder===activeAdminFolder); btn.setAttribute('aria-pressed',String(btn.dataset.rwFolder===activeAdminFolder));});
-        document.querySelectorAll('[data-video-folder]').forEach(group=>group.classList.toggle('hidden', group.dataset.videoFolder!==activeAdminFolder));
-        const visibleCount = adminFolderCounts.get(activeAdminFolder) || 0;
-        document.getElementById('folder-video-summary').textContent = `${activeAdminFolder} · ${visibleCount} arquivo(s)`;
-        document.getElementById('folder-empty-state').classList.toggle('hidden',visibleCount>0);
-        renderBulkQueue();
+
+    function setAdminFolder(name){
+        if(bulkUploading)return;
+        activeAdminFolder=adminProjectFolders.includes(name)?name:'';
+        renderAdminFolderNavigation();
+        document.getElementById('new-video-group').value=activeAdminFolder;
+        document.getElementById('new-folder-parent').value=activeAdminFolder;
+        document.getElementById('upload-destination-label').textContent=activeAdminFolder||'Arquivos do projeto';
+        document.querySelectorAll('[data-video-folder]').forEach(group=>group.classList.toggle('hidden',group.dataset.videoFolder!==activeAdminFolder));
+        const count=adminFolderCounts.get(activeAdminFolder)||0;
+        document.getElementById('folder-video-summary').textContent=`${activeAdminFolder||'Arquivos do projeto'} · ${count} arquivo(s)`;
+        document.getElementById('folder-empty-state').classList.toggle('hidden',count>0);renderBulkQueue();
     }
-    function renderSubfoldersUI(subfolders) {
-        adminProjectFolders = [...new Set((Array.isArray(subfolders)?subfolders:[]).filter(n=>typeof n==='string' && n.trim() && n!=='Geral'))];
-        const container = document.getElementById('subfolders-list-container');
-        const select = document.getElementById('new-video-group');
-        container.replaceChildren(); select.replaceChildren();
-        for (const name of ['Geral',...adminProjectFolders]) {
-            const option=document.createElement('option'); option.value=name; option.textContent=name; select.append(option);
-            const card=document.createElement('div'); card.className='rw-folder-wrap';
-            const button=document.createElement('button'); button.type='button'; button.className='rw-folder'; button.dataset.rwFolder=name;
-            button.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3Z"/></svg><strong>${escapeHtml(name)}</strong><small>${adminFolderCounts.get(name)||0} arquivo(s)</small>`;
-            button.onclick=()=>setAdminFolder(name); card.append(button);
-            if(name!=='Geral') {
-                const remove=document.createElement('button'); remove.type='button'; remove.className='rw-folder-remove'; remove.textContent='×'; remove.title=`Remover pasta ${name}`;
-                remove.onclick=()=>{if(bulkUploading)return; const cid=currentOpenClientId,pid=currentOpenProjectId; showModal('Remover pasta',`Remover “${name}” e mover seus vídeos para Geral?`,true,async()=>{
-                    try {
-                        const videos=await getDocs(collection(db,'clients',cid,'projects',pid,'videos'));
-                        const affected=videos.docs.filter(d=>d.data().groupName===name);
-                        // Primeiro muda os vídeos; assim não reaparecem em uma pasta recriada.
-                        for(let i=0;i<affected.length;i+=400) {const batch=writeBatch(db); affected.slice(i,i+400).forEach(v=>batch.update(v.ref,{groupName:'Geral'})); await batch.commit();}
-                        await runTransaction(db,async tx=>{const ref=doc(db,'clients',cid,'projects',pid);const snap=await tx.get(ref);if(!snap.exists())throw new Error('Projeto removido.');tx.update(ref,{subfolders:(snap.data().subfolders||[]).filter(n=>n!==name)});});
-                        invalidateFileInventory(); showToast('Pasta removida. Os vídeos estão em Geral.');
-                    }catch(error){showToast(error.message,'error');}
-                });}; card.append(remove);
-            }
-            container.append(card);
+    function renderAdminFolderNavigation(){
+        const container=document.getElementById('subfolders-list-container'),crumbs=document.getElementById('admin-folder-breadcrumbs');container.replaceChildren();crumbs.replaceChildren();
+        for(const path of ['',...activeAdminFolder.split('/').map((_,i)=>activeAdminFolder.split('/').slice(0,i+1).join('/')).filter(Boolean)]){
+            const button=document.createElement('button');button.type='button';button.textContent=path?folderLeaf(path):'Projeto';button.disabled=bulkUploading;button.setAttribute('aria-current',path===activeAdminFolder?'page':'false');button.onclick=()=>setAdminFolder(path);crumbs.append(button);
         }
-        if(!['Geral',...adminProjectFolders].includes(activeAdminFolder)) activeAdminFolder='Geral';
-        setAdminFolder(activeAdminFolder);
+        for(const name of adminProjectFolders.filter(path=>folderParent(path)===activeAdminFolder)){
+            const card=document.createElement('div');card.className='rw-folder-wrap';const button=document.createElement('button');button.type='button';button.className='rw-folder';button.dataset.rwFolder=name;
+            const descendants=adminProjectFolders.filter(path=>folderParent(path)===name).length;
+            button.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3Z"/></svg><strong>${escapeHtml(folderLeaf(name))}</strong><small>${adminFolderCounts.get(name)||0} arquivo(s) · ${descendants} subpasta(s)</small>`;button.disabled=bulkUploading;button.onclick=()=>setAdminFolder(name);card.append(button);
+            const remove=document.createElement('button');remove.type='button';remove.className='rw-folder-remove';remove.textContent='×';remove.title='Remover pasta vazia';remove.disabled=bulkUploading;
+            remove.onclick=()=>{if(bulkUploading)return;const cid=currentOpenClientId,pid=currentOpenProjectId;showModal('Remover pasta',`Remover a pasta “${folderLeaf(name)}”? Somente pastas sem arquivos e sem subpastas podem ser removidas.`,true,async()=>{
+                try{const videos=await getDocs(collection(db,'clients',cid,'projects',pid,'videos'));if(videos.docs.some(d=>!d.data().isDeleted&&(d.data().groupName===name||d.data().groupName?.startsWith(name+'/'))))throw new Error('Esta pasta contém arquivos. Mova ou remova as entregas antes de excluir a pasta.');
+                    await runTransaction(db,async tx=>{const ref=doc(db,'clients',cid,'projects',pid),snap=await tx.get(ref);if(!snap.exists())throw new Error('Projeto removido.');const paths=projectFolderPaths(snap.data());if(paths.some(p=>p.startsWith(name+'/')))throw new Error('Remova as subpastas vazias antes de excluir esta pasta.');tx.update(ref,{subfolders:paths.filter(p=>p!==name),lastUpdated:serverTimestamp()});});showToast('Pasta vazia removida.');
+                }catch(error){showToast(error.message,'error');}
+            });};card.append(remove);container.append(card);
+        }
+        if(!container.children.length){const empty=document.createElement('p');empty.className='rw-hint';empty.textContent=activeAdminFolder?'Nenhuma subpasta. Crie uma abaixo ou envie arquivos para esta pasta.':'Nenhuma pasta criada. Crie sua organização ou envie arquivos diretamente ao projeto.';container.append(empty);}
+    }
+    function renderSubfoldersUI(subfolders){
+        adminProjectFolders=projectFolderPaths({subfolders});
+        for(const id of ['new-video-group','new-folder-parent']){const select=document.getElementById(id);select.replaceChildren(new Option(id==='new-folder-parent'?'Raiz do projeto':'Arquivos do projeto',''));for(const name of adminProjectFolders)select.add(new Option(name.split('/').join(' / '),name));}
+        if(!adminProjectFolders.includes(activeAdminFolder))activeAdminFolder='';setAdminFolder(activeAdminFolder);
     }
     document.getElementById('form-manage-subfolders').addEventListener('submit',async event=>{
-        event.preventDefault(); if(bulkUploading || !currentOpenClientId || !currentOpenProjectId)return;
-        const cid=currentOpenClientId,pid=currentOpenProjectId;
-        const input=document.getElementById('new-subfolder-name'), name=input.value.trim().normalize('NFC');
-        if(!name || name.length>80 || /[\\/\u0000-\u001f]/.test(name))return showToast('Use um nome de até 80 caracteres, sem barras.','error');
+        event.preventDefault();if(bulkUploading||!currentOpenClientId||!currentOpenProjectId)return;
+        const cid=currentOpenClientId,pid=currentOpenProjectId,input=document.getElementById('new-subfolder-name'),name=input.value.trim().normalize('NFC'),parent=document.getElementById('new-folder-parent').value,path=parent?parent+'/'+name:name;
+        if(!name||name==='.'||name==='..'||name.length>80||/[\\/\u0000-\u001f]/.test(name))return showToast('Use um nome de até 80 caracteres, sem barras.','error');
+        if(path.split('/').length>8)return showToast('Use até 8 níveis de pastas.','error');
         const button=event.currentTarget.querySelector('button');button.disabled=true;
-        try {
-            await runTransaction(db,async tx=>{
-                const ref=doc(db,'clients',cid,'projects',pid),snapshot=await tx.get(ref);
-                if(!snapshot.exists())throw new Error('Projeto removido.');
-                const folders=snapshot.data().subfolders||[];
-                if(['Geral',...folders].some(n=>n.toLocaleLowerCase('pt-BR')===name.toLocaleLowerCase('pt-BR')))throw new Error('Esta pasta já existe.');
-                tx.update(ref,{subfolders:[...folders,name]});
-            });
-            if(currentOpenClientId===cid && currentOpenProjectId===pid){input.value=''; activeAdminFolder=name;renderSubfoldersUI([...adminProjectFolders,name]);}
-            showToast(`Pasta “${name}” criada. Selecione os arquivos para enviar.`);
+        try{await runTransaction(db,async tx=>{const ref=doc(db,'clients',cid,'projects',pid),snapshot=await tx.get(ref);if(!snapshot.exists())throw new Error('Projeto removido.');const folders=projectFolderPaths(snapshot.data());if(parent&&!folders.includes(parent))throw new Error('A pasta pai foi removida.');if(folders.some(n=>n.toLocaleLowerCase('pt-BR')===path.toLocaleLowerCase('pt-BR')))throw new Error('Já existe uma pasta com este nome neste local.');tx.update(ref,{subfolders:[...folders,path],lastUpdated:serverTimestamp()});});
+            if(currentOpenClientId===cid&&currentOpenProjectId===pid){input.value='';activeAdminFolder=path;renderSubfoldersUI([...adminProjectFolders,path]);}showToast(`Pasta “${path}” criada.`);
         }catch(error){showToast(error.message,'error');}finally{button.disabled=false;}
     });
 
@@ -2295,7 +2306,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
     bulkDropzone.addEventListener('drop',event=>{event.preventDefault();bulkDropzone.classList.remove('is-dragover');addFilesToQueue(event.dataTransfer.files);});
     function setBulkBusy(value) {
         bulkUploading=value;
-        ['new-video-group','new-video-name','new-video-url','file-upload-input','folder-upload-input','btn-save-video','new-subfolder-name'].forEach(id=>document.getElementById(id).disabled=value);
+        ['new-video-group','new-video-name','new-video-url','file-upload-input','folder-upload-input','btn-save-video','new-subfolder-name','new-folder-parent'].forEach(id=>document.getElementById(id).disabled=value);
         document.getElementById('form-manage-subfolders').querySelector('button').disabled=value;
         document.getElementById('bulk-cancel-btn').classList.toggle('hidden',!value);
         document.getElementById('bulk-cancel-btn').textContent='Parar após o arquivo atual';
@@ -2305,7 +2316,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
     document.getElementById('form-add-video-to-project').addEventListener('submit',async event=>{
         event.preventDefault(); if(bulkUploading || !currentOpenClientId || !currentOpenProjectId)return;
         const cid=currentOpenClientId,pid=currentOpenProjectId,group=activeAdminFolder;
-        const destinationProfile={...selectedStorage()};
+        const destinationProfile={...selectedStorage()};if(destinationProfile.unavailable)return showToast('Escolha um R2 disponível antes de enviar.','error');
         const projectRef=doc(db,'clients',cid,'projects',pid), clientRef=doc(db,'clients',cid);
         const label=document.getElementById('new-video-name').value.trim();
         const jobs=bulkQueue.filter(q=>q.status!=='done');
@@ -2333,7 +2344,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
                 try {
                     let finalUrl=link;
                     if(item.file){
-                        if(!item.uploadedUrl)item.uploadedUrl=await uploadToR2(item.file,`/${ROOT_FOLDER_NAME}/Clientes/${cid}/${pid}/${safePathPart(group)}`);
+                        if(item.uploadedUrl&&item.uploadedStorageId&&item.uploadedStorageId!==destinationProfile.id){item.uploadedUrl=null;}if(!item.uploadedUrl){item.uploadedUrl=await uploadToR2(item.file,`/${ROOT_FOLDER_NAME}/Clientes/${cid}/${pid}/${folderStoragePath(group)}`,{profile:destinationProfile});item.uploadedStorageId=destinationProfile.id;}
                         finalUrl=item.uploadedUrl;
                     }
                     // Um ID estável evita duplicações ao repetir um envio que falhou.
@@ -2341,11 +2352,12 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
                     await runTransaction(db,async tx=>{
                         const c=await tx.get(clientRef),p=await tx.get(projectRef),v=await tx.get(ref);
                         if(!c.exists()||!p.exists())throw new Error('O cliente ou projeto foi excluído durante o envio.');
-                        if(!['Geral',...(p.data().subfolders||[])].includes(group))throw new Error('A pasta de destino foi removida durante o envio.');
+                        if(group&&!projectFolderPaths(p.data()).includes(group))throw new Error('A pasta de destino foi removida durante o envio.');
                         if(v.exists()){if(v.data().videoUrl===finalUrl)return;throw new Error('Conflito no identificador do arquivo.');}
                         const base=item.file?item.file.name.replace(/\.[^.]+$/,''):'Vídeo';
                         tx.set(ref,{
                             videoName:item.savedTitle||label||base,
+                            mediaType:item.file?.type?.startsWith('image/')?'image':(/\.(png|jpe?g|webp|gif|avif)(?:[?#]|$)/i.test(finalUrl)?'image':'video'),
                             videoUrl:finalUrl,groupName:group,videoStatus:'pending',videoVersion:1,adjustments:[],
                             originalFileName:item.file?.name||'',fileSize:item.file?.size??null,contentType:item.file?.type||'',
                             clientName,projectName,createdAt:serverTimestamp(),lastUpdated:serverTimestamp(),orderNumber:Date.now()+index
@@ -2364,7 +2376,7 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
             else{showToast(`${done} arquivo(s) enviado(s) para “${group}”.`);bulkQueue=[];document.getElementById('new-video-url').value='';document.getElementById('new-video-name').value='';}
         }catch(error){showToast(error.message,'error');}finally{setBulkBusy(false);}
     });
-    window.addEventListener('beforeunload',event=>{if(bulkUploading||adjustmentUploadBusy||r2ActiveUploads||fileDeleteExecuting){event.preventDefault();event.returnValue='';}});
+    window.addEventListener('beforeunload',event=>{if(designUploadBusy||bulkUploading||adjustmentUploadBusy||r2ActiveUploads||fileDeleteExecuting){event.preventDefault();event.returnValue='';}});
 
     // A listagem real do bucket encontra inclusive arquivos sem documento no Firestore.
     let fileInventory = [];
@@ -3508,7 +3520,7 @@ Qualquer dúvida, estamos à disposição!`;
             if (bulkUploading) return showToast('Aguarde o envio terminar.', 'info');
             if (projectDetailsUnsubscribe) { projectDetailsUnsubscribe(); projectDetailsUnsubscribe = null; }
             if (activeProjectListener) { activeProjectListener(); activeProjectListener = null; }
-            currentOpenProjectId = null; activeAdminFolder = 'Geral'; resetBulkQueue();
+            currentOpenProjectId = null; activeAdminFolder = ''; resetBulkQueue();
             document.getElementById('client-projects-view').classList.remove('hidden');
             document.getElementById('client-project-details-view').classList.add('hidden');
             document.getElementById('back-to-projects-btn').classList.add('hidden');
@@ -3602,7 +3614,7 @@ function loadProjectsGrid(clientId) {
             // Listener: Abrir Projeto
             el.addEventListener('click', () => {
                 if (bulkUploading) return;
-                resetBulkQueue(); activeAdminFolder = 'Geral';
+                resetBulkQueue(); activeAdminFolder = '';
                 currentOpenProjectId = pid;
                 showProjectDetailsView(data);
                 renderSubfoldersUI(data.subfolders);
@@ -3629,6 +3641,67 @@ function loadProjectsGrid(clientId) {
         });
     });
 }     
+
+
+    function adminDeliveryPreview(data){
+        if(!deliveryIsImage(data))return getVideoEmbedHtml(data.videoUrl,'video');
+        return '<div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;width:100%;height:100%">'+deliverySlides(data).map((url,index)=>`<figure style="flex:0 0 100%;width:100%;height:100%;scroll-snap-align:start;position:relative"><img src="${escapeHtml(url)}" alt="Página ${index+1}" style="width:100%;height:100%;object-fit:contain" loading="lazy"><figcaption style="position:absolute;bottom:6px;left:8px;padding:4px 8px;background:#000b;color:white;font-size:11px">Página ${index+1} / ${deliverySlides(data).length} · deslize →</figcaption></figure>`).join('')+'</div>';
+    }
+
+    async function openDeliveryEditor(ref,data){
+        document.getElementById('design-editor')?.remove();
+        const isImage=deliveryIsImage(data), projectRef=doc(db,...ref.path.split('/').slice(0,4));
+        const overlay=document.createElement('div');overlay.id='design-editor';overlay.className='de-overlay';
+        overlay.innerHTML=`<form class="de-panel" role="dialog" aria-modal="true" aria-label="Configurar entrega"><header><div><small>ENTREGA DE CONTEÚDO</small><h2>${isImage?'Post e apresentação do feed':'Capa do vídeo'}</h2></div><button type="button" data-close aria-label="Fechar">×</button></header><p data-name></p>
+        ${isImage?`<label>Legenda do post<textarea data-caption rows="4" maxlength="12000"></textarea></label><div class="de-columns"><label>Data prevista<input data-date type="date"></label><label>Posição na grade<input data-order type="number" step="any" required></label></div><p>Menores posições aparecem primeiro. A data é informativa; não agenda publicações.</p><label>Apresentação inicial do cliente<select data-layout><option value="grid">Grade de posts</option><option value="phone">Simulação de feed no celular</option></select></label><label>Nome do perfil<input data-profile maxlength="80" placeholder="@seucliente"></label><p>A apresentação e o nome do perfil valem para as imagens de todo o projeto.</p><h3>Páginas do carrossel</h3><p>A imagem principal é a primeira página. Use “Editar / substituir” para trocá-la. As outras páginas podem ser substituídas aqui. Adicione até 19 páginas e organize sua ordem abaixo.</p><div data-slides></div><label>Adicionar imagens<input data-files type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif"></label><div class="de-columns"><input data-link type="url" placeholder="Link direto de uma imagem"><button type="button" data-add-link>Adicionar link</button></div>`:
+        `<p>Pause no frame desejado ou arraste o controle. O primeiro frame continua sendo o padrão. Disponível para vídeos com reprodução direta no navegador.</p><video data-video controls playsinline preload="metadata"></video><label>Posição da capa (segundos)<input data-time type="number" min="0" step="0.001" value="${Number(data.coverTime)||0}"></label><input data-range type="range" min="0" max="0" step="0.001" value="0" aria-label="Selecionar frame"><div class="de-columns"><button type="button" data-use>Usar o frame pausado</button><button type="button" data-first>Voltar ao primeiro frame</button></div><p data-cover-hint>Carregando vídeo…</p>`}
+        <p data-message role="status"></p><footer><button type="button" data-cancel>Cancelar</button><button type="submit" data-save>Salvar apresentação</button></footer></form>`;
+        document.body.append(overlay);const $=s=>overlay.querySelector(s);$('[data-name]').textContent=data.videoName||'Arquivo';
+        const previousFocus=document.activeElement;let busy=false,closed=false,projectData={},rows=(data.designSlides||[]).map(url=>({url}));
+        const cleanup=()=>{if(busy)return;closed=true;const v=$('[data-video]');if(v){v.pause();v.removeAttribute('src');v.load();}rows.forEach(row=>{if(row.preview)URL.revokeObjectURL(row.preview);});overlay.remove();previousFocus?.focus();};
+        $('[data-close]').onclick=cleanup;$('[data-cancel]').onclick=cleanup;
+        overlay.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();cleanup();}if(event.key==='Tab'){const nodes=[...overlay.querySelectorAll('button,input,select,textarea')].filter(n=>!n.disabled&&n.getClientRects().length);if(event.shiftKey&&document.activeElement===nodes[0]){event.preventDefault();nodes.at(-1).focus();}else if(!event.shiftKey&&document.activeElement===nodes.at(-1)){event.preventDefault();nodes[0].focus();}}});
+        $('[data-close]').focus();
+        function renderSlides(){
+            const holder=$('[data-slides]');holder.replaceChildren();
+            [{url:data.videoUrl},...rows].forEach((row,index)=>{const line=document.createElement('div');line.className='de-slide';const img=document.createElement('img');img.src=row.preview||row.url;img.alt='Página '+(index+1);const label=document.createElement('span');label.textContent=`${index+1} · ${row.file?.name||(index?'Página adicional':'Imagem principal')}`;line.append(img,label);
+                if(index){const change=document.createElement('label');change.style.cssText='flex:none;margin:0;font-size:11px;cursor:pointer';change.textContent='Substituir';const input=document.createElement('input');input.type='file';input.accept='image/png,image/jpeg,image/webp,image/gif,image/avif';input.hidden=true;input.style.display='none';input.disabled=busy;input.onchange=()=>{const file=input.files[0];if(!file||!/^image\/(png|jpeg|webp|gif|avif)$/.test(file.type))return;if(row.preview)URL.revokeObjectURL(row.preview);rows[index-1]={file,preview:URL.createObjectURL(file)};renderSlides();};change.append(input);line.append(change);}
+                if(index)for(const [text,delta]of [['↑',-1],['↓',1],['Remover',0]]){const button=document.createElement('button');button.type='button';button.textContent=text;button.disabled=busy||(delta===-1&&index===1)||(delta===1&&index===rows.length);button.onclick=()=>{const i=index-1;if(delta)[rows[i],rows[i+delta]]=[rows[i+delta],rows[i]];else{if(row.preview)URL.revokeObjectURL(row.preview);rows.splice(i,1);}renderSlides();};line.append(button);}holder.append(line);});
+        }
+        if(isImage){
+            $('[data-caption]').value=data.caption||'';$('[data-date]').value=data.publishDate||'';$('[data-order]').value=Number(data.orderNumber)||0;renderSlides();
+            $('[data-files]').onchange=event=>{for(const file of event.target.files){if(rows.length>=19){$('[data-message]').textContent='Limite de 20 páginas por post.';break;}if(!/^image\/(png|jpeg|webp|gif|avif)$/.test(file.type))continue;rows.push({file,preview:URL.createObjectURL(file)});}event.target.value='';renderSlides();};
+            $('[data-add-link]').onclick=()=>{try{if(rows.length>=19)throw new Error('Limite de 20 páginas.');rows.push({url:validFileUrl($('[data-link]').value.trim())});$('[data-link]').value='';renderSlides();}catch(error){$('[data-message]').textContent=error.message;}};
+        }else{
+            const video=$('[data-video]'),time=$('[data-time]'),range=$('[data-range]');
+            const sync=()=>{time.value=video.currentTime.toFixed(3);range.value=video.currentTime;};
+            video.onloadedmetadata=()=>{range.max=time.max=Math.max(0,video.duration-.001);video.currentTime=Math.min(Number(data.coverTime)||0,Number(range.max));$('[data-cover-hint]').textContent='Selecione o frame e salve. A capa será exibida sem alterar o vídeo.';};
+            video.onpause=sync;range.oninput=()=>{video.pause();video.currentTime=Number(range.value);time.value=range.value;};time.onchange=()=>{if(Number.isFinite(video.duration)){video.pause();video.currentTime=Math.max(0,Math.min(Number(time.value),video.duration-.001));range.value=video.currentTime;}};
+            $('[data-use]').onclick=()=>{video.pause();sync();};$('[data-first]').onclick=()=>{video.pause();video.currentTime=0;time.value=range.value=0;};
+            video.onerror=()=>{$('[data-cover-hint]').textContent='Este link não permite selecionar frames aqui. Use um arquivo MP4/WebM direto. A entrega existente continua disponível.';$('[data-save]').disabled=true;};video.src=data.videoUrl;
+        }
+        // Load project settings before enabling edits; do not overwrite them with defaults on failure.
+        $('[data-save]').disabled=true;
+        try{const snap=await getDocFromServer(projectRef);if(!snap.exists())throw new Error('Projeto removido.');projectData=snap.data();if(closed)return;if(isImage){$('[data-layout]').value=projectData.designPresentation==='phone'?'phone':'grid';$('[data-profile]').value=projectData.designProfile||'';}$('[data-save]').disabled=false;}catch(error){if(!closed)$('[data-message]').textContent='Não foi possível carregar o projeto: '+error.message;return;}
+        overlay.querySelector('form').onsubmit=async event=>{
+            event.preventDefault();if(busy)return;const deliveryStorage={...selectedStorage()};busy=true;designUploadBusy=true;const controls=[...overlay.querySelectorAll('button,input,textarea,select')];controls.forEach(n=>n.disabled=true);$('[data-message]').textContent='Salvando…';
+            try{
+                const patch=isImage?{caption:$('[data-caption]').value.trim(),publishDate:$('[data-date]').value,orderNumber:Number($('[data-order]').value),mediaType:'image'}:{coverTime:Number($('[data-time]').value)};
+                if(!isImage&&(!Number.isFinite(patch.coverTime)||patch.coverTime<0||!Number.isFinite($('[data-video]').duration)||patch.coverTime>=$('[data-video]').duration))throw new Error('Selecione um frame dentro da duração do vídeo.');
+                if(isImage){if(!Number.isFinite(patch.orderNumber))throw new Error('Informe uma posição válida.');for(const row of rows)if(row.file&&!row.url){$('[data-message]').textContent='Enviando '+row.file.name;row.url=await uploadToR2(row.file,`/${ROOT_FOLDER_NAME}/Clientes/${ref.path.split('/')[1]}/${ref.path.split('/')[3]}/${folderStoragePath(data.groupName||'')}`,{profile:deliveryStorage});}patch.designSlides=rows.map(row=>row.url);}
+                await runTransaction(db,async tx=>{
+                    const snap=await tx.get(ref),project=await tx.get(projectRef);if(!snap.exists()||!project.exists()||snap.data().isDeleted)throw new Error('Entrega removida.');const fresh=snap.data();
+                    const signature=d=>JSON.stringify([d.videoUrl,d.videoVersion,d.caption,d.publishDate,d.orderNumber,d.designSlides,d.coverTime]);if(signature(fresh)!==signature(data))throw new Error('Esta entrega foi alterada. Feche e abra o editor novamente.');
+                    if(isImage&&(project.data().designPresentation!==projectData.designPresentation||project.data().designProfile!==projectData.designProfile))throw new Error('A apresentação do projeto mudou. Reabra o editor.');
+                    const contentChanged=isImage&&(patch.caption!==(fresh.caption||'')||JSON.stringify(patch.designSlides)!==JSON.stringify(fresh.designSlides||[]));
+                    if(contentChanged){const at=new Date().toISOString();patch.versionHistory=[...(fresh.versionHistory||[]),{videoUrl:fresh.videoUrl,videoName:fresh.videoName||'',caption:fresh.caption||'',designSlides:fresh.designSlides||[],contentType:fresh.contentType||'',version:Number(fresh.videoVersion)||1,replacedAt:at,reason:'design-edit'}];patch.videoVersion=(Number(fresh.videoVersion)||1)+1;patch.videoStatus='pending';patch.clientRating=deleteField();patch.clientFeedback=deleteField();}
+                    assertDocumentSize({...fresh,...patch});tx.update(ref,{...patch,lastUpdated:serverTimestamp()});
+                    if(isImage)tx.update(projectRef,{designPresentation:$('[data-layout]').value,designProfile:$('[data-profile]').value.trim(),...(contentChanged?{projectStatus:'pending',reviewRevision:(Number(project.data().reviewRevision)||0)+1,clientRating:deleteField(),clientFeedback:deleteField()}:{}),lastUpdated:serverTimestamp()});
+                });invalidateFileInventory();busy=false;designUploadBusy=false;cleanup();showToast('Apresentação salva.');
+            }catch(error){$('[data-message]').textContent=error.message;busy=false;designUploadBusy=false;controls.forEach(n=>n.disabled=false);if(isImage)renderSlides();}
+        };
+    }
+
         function loadProjectVideos(clientId,projectId) {
             if(activeProjectListener)activeProjectListener();
             if(projectDetailsUnsubscribe)projectDetailsUnsubscribe();
@@ -3637,9 +3710,9 @@ function loadProjectsGrid(clientId) {
             const isCurrent=()=>currentOpenClientId===clientId&&currentOpenProjectId===projectId;
             const render=()=>{
                 if(!isCurrent()||!adminVideoCache)return;
-                const folders=['Geral',...adminProjectFolders],groups=new Map(folders.map(name=>[name,[]]));
+                const folders=['',...adminProjectFolders],groups=new Map(folders.map(name=>[name,[]]));
                 const sorted=[...adminVideoCache.docs].sort((a,b)=>(Number(a.data().orderNumber)||0)-(Number(b.data().orderNumber)||0)||a.id.localeCompare(b.id));
-                for(const snapshot of sorted){const data=snapshot.data();if(data.isDeleted)continue;const group=folders.includes(data.groupName)?data.groupName:'Geral';groups.get(group).push({snapshot,data});}
+                for(const snapshot of sorted){const data=snapshot.data();if(data.isDeleted)continue;const group=deliveryFolder(data,adminProjectFolders);groups.get(group).push({snapshot,data});}
                 adminFolderCounts=new Map([...groups].map(([name,items])=>[name,items.length]));
                 list.replaceChildren();
                 for(const [name,items]of groups){
@@ -3648,11 +3721,12 @@ function loadProjectsGrid(clientId) {
                     const grid=document.createElement('div');grid.className='rw-video-grid';
                     for(const {snapshot,data}of items){
                         const card=document.createElement('article');card.className='rw-video-card';
-                        const media=document.createElement('div');media.className='rw-video-media';media.innerHTML=getVideoEmbedHtml(data.videoUrl,'video');
+                        const media=document.createElement('div');media.className='rw-video-media';media.innerHTML=adminDeliveryPreview(data);
                         const body=document.createElement('div');body.className='rw-video-body';
                         const title=document.createElement('strong');title.textContent=data.videoName||data.originalFileName||'Sem título';title.title=title.textContent;
                         const status=document.createElement('small');status.textContent=({approved:'Aprovado',adjusting:'Ajustes solicitados',adjusted:'Ajustado · aguardando revisão'})[data.videoStatus]||'Aguardando revisão';
                         const actions=document.createElement('div');actions.className='rw-inline';
+            const move=document.createElement('select');move.className='rw-input';move.setAttribute('aria-label','Mover arquivo para pasta');move.add(new Option('Arquivos do projeto',''));for(const path of adminProjectFolders)move.add(new Option(path,path));move.value=deliveryFolder(data,adminProjectFolders);move.onchange=async()=>{const destination=move.value;move.disabled=true;try{await runTransaction(db,async tx=>{const p=await tx.get(doc(db,'clients',clientId,'projects',projectId)),v=await tx.get(snapshot.ref);if(!p.exists()||!v.exists())throw new Error('Entrega removida.');if(destination&&!projectFolderPaths(p.data()).includes(destination))throw new Error('Pasta de destino removida.');if((v.data().groupName||'')!==(data.groupName||''))throw new Error('Este arquivo já foi movido. Atualize a página.');tx.update(snapshot.ref,{groupName:destination,lastUpdated:serverTimestamp()});});invalidateFileInventory();showToast('Arquivo movido.');}catch(error){move.value=deliveryFolder(data,adminProjectFolders);showToast(error.message,'error');}finally{move.disabled=false;}};
                         const edit=document.createElement('button');edit.type='button';edit.className='rw-btn rw-btn-secondary edit-vid';edit.textContent='Editar / substituir';
                         edit.onclick=()=>{
                             editVideoTarget={ref:snapshot.ref,url:data.videoUrl};
@@ -3669,7 +3743,8 @@ function loadProjectsGrid(clientId) {
                         remove.onclick=()=>showModal('Remover vídeo',`Remover “${title.textContent}” da entrega? O arquivo e suas versões continuarão disponíveis para limpeza na aba Arquivos.`,true,async()=>{
                             try{await runTransaction(db,async tx=>{const projectRef=doc(db,'clients',clientId,'projects',projectId),project=await tx.get(projectRef),video=await tx.get(snapshot.ref);if(!project.exists()||!video.exists())throw new Error('Projeto ou vídeo removido.');tx.update(snapshot.ref,{isDeleted:true,videoStatus:'removed',deletedAt:serverTimestamp(),lastUpdated:serverTimestamp()});tx.update(projectRef,{reviewRevision:(Number(project.data().reviewRevision)||0)+1,projectStatus:'pending',lastUpdated:serverTimestamp()});});invalidateFileInventory();showToast('Vídeo removido. Limpe o arquivo e suas versões na aba Arquivos.');}catch(error){showToast('Não foi possível remover: '+error.message,'error');}
                         });
-                        body.append(title,status);actions.append(edit,remove);body.append(actions);card.append(media,body);grid.append(card);
+                        const deliveryEdit=document.createElement('button');deliveryEdit.type='button';deliveryEdit.className='rw-btn rw-btn-secondary';deliveryEdit.textContent=deliveryIsImage(data)?'Post / carrossel / feed':'Escolher frame da capa';deliveryEdit.onclick=()=>openDeliveryEditor(snapshot.ref,data);
+                        body.append(title,status);actions.append(edit,deliveryEdit,remove,move);body.append(actions);card.append(media,body);grid.append(card);
                     }
                     section.append(grid);list.append(section);
                 }
@@ -4567,7 +4642,7 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                 for(const row of filtered){
                     const {vData}=row;
                     const card=document.createElement('article');card.className='bg-leather p-6 rounded-xl shadow-2xl border border-yellow-600/50 mb-8';
-                    card.innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-4 mb-6"><div><h4 class="text-xl text-yellow-100 font-bold">${escapeHtml(vData.videoName||'Vídeo')}</h4><p class="text-gray-400 text-sm mt-2">${escapeHtml(row.clientName)} / ${escapeHtml(row.projectName)} / ${escapeHtml(vData.groupName||'Geral')}</p></div><div class="flex flex-wrap gap-2"><button class="open-upload-dropzone rw-btn" type="button">Enviar arquivo ajustado</button><button class="mark-adjusted rw-btn rw-btn-secondary" type="button">Concluir ajustes</button></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-6"><div class="aspect-video bg-black rounded overflow-hidden rw-adjust-preview">${getVideoEmbedHtml(vData.videoUrl,'video')}</div><div class="rw-adjust-comment-list max-h-[400px] overflow-y-auto"></div></div>`;
+                    card.innerHTML=`<div class="flex flex-col sm:flex-row justify-between gap-4 mb-6"><div><h4 class="text-xl text-yellow-100 font-bold">${escapeHtml(vData.videoName||'Vídeo')}</h4><p class="text-gray-400 text-sm mt-2">${escapeHtml(row.clientName)} / ${escapeHtml(row.projectName)} / ${escapeHtml(vData.groupName||'Geral')}</p></div><div class="flex flex-wrap gap-2"><button class="open-upload-dropzone rw-btn" type="button">Enviar arquivo ajustado</button><button class="mark-adjusted rw-btn rw-btn-secondary" type="button">Concluir ajustes</button></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-6"><div class="aspect-video bg-black rounded overflow-hidden rw-adjust-preview">${adminDeliveryPreview(vData)}</div><div class="rw-adjust-comment-list max-h-[400px] overflow-y-auto"></div></div>`;
                     const comments=card.querySelector('.rw-adjust-comment-list');
                     const sorted=[...(Array.isArray(vData.adjustments)?vData.adjustments:[])].filter(a=>!a.resolvedAt).sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0));
                     for(const adj of sorted){
@@ -4734,7 +4809,7 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                     <div class="mb-3 font-bold text-yellow-500 truncate text-lg font-serif-premium border-b border-yellow-800/50 pb-2">${vd.videoName}</div>
                     
                     <div class="aspect-video bg-black mb-4 rounded overflow-hidden border border-yellow-900/50 shadow-inner">
-                        ${getVideoEmbedHtml(vd.videoUrl, 'video')}
+                        ${adminDeliveryPreview(vd)}
                     </div>
                     
                     <div class="flex justify-between items-center pt-2">
@@ -5350,7 +5425,7 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
         document.getElementById('close-adjustment-upload').onclick=()=>{if(!adjustmentUploadBusy){dropzoneModal.classList.add('hidden');currentUploadAdj=null;lastAdjustmentFile=null;}};
         const handleDroppedFile=async file=>{
             if(!file||!currentUploadAdj||adjustmentUploadBusy)return;
-            if(!file.type?.startsWith('video/')&&!/\.(mp4|mov|webm|m4v|mkv|avi|ogv)$/i.test(file.name))return showToast('Selecione um arquivo de vídeo.','error');
+            if(!/^(video|image)\//.test(file.type||'')&&!/\.(mp4|mov|webm|m4v|mkv|avi|ogv|png|jpe?g|webp|gif|avif)$/i.test(file.name))return showToast('Selecione um vídeo ou uma imagem.','error');
             const target=currentUploadAdj;lastAdjustmentFile=file;adjustmentUploadBusy=true;adjustmentUploadController=new AbortController();dropzoneInput.disabled=true;document.getElementById('close-adjustment-upload').disabled=true;document.getElementById('r2-adjustment-selected').disabled=true;
             dropzoneStatus.classList.remove('hidden');dropzoneError.classList.add('hidden');retryAdjustmentButton.classList.add('hidden');cancelAdjustmentButton.classList.remove('hidden');cancelAdjustmentButton.disabled=false;cancelAdjustmentButton.textContent='Cancelar envio';
             document.getElementById('dropzone-filename').textContent=file.name;
@@ -5403,7 +5478,7 @@ document.getElementById('copy-financeiro-link-btn')?.addEventListener('click', (
                 </div>
                 <p class="text-white font-bold text-xl mb-1 font-serif-premium tracking-tight">Arraste o vídeo finalizado aqui</p>
                 <p class="text-gray-500 text-sm italic font-medium">Ou clique para navegar nas pastas</p>
-                <input type="file" id="dropzone-input" class="hidden" accept="video/*">
+                <input type="file" id="dropzone-input" class="hidden" accept="video/*,image/png,image/jpeg,image/webp,image/gif,image/avif">
             </div>
 
             <p id="dropzone-error-message" class="rw-file-notice rw-file-error hidden" role="alert" style="white-space:normal;overflow-wrap:anywhere"></p><div class="rw-inline" style="margin-bottom:16px"><button type="button" id="dropzone-retry-button" class="rw-btn rw-btn-secondary hidden">Tentar novamente</button><button type="button" id="dropzone-cancel-button" class="rw-btn rw-btn-danger hidden">Cancelar envio</button></div>
