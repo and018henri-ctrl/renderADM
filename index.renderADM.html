@@ -682,18 +682,18 @@
 
             <!-- Config (Site Público) -->
             <div id="tab-config" class="admin-tab-content hidden p-4 sm:p-6 bg-leather rounded-xl shadow-2xl border-4 border-double border-yellow-700/50"><section class="render-workspace" id="r2-storage-settings">
-<div class="rw-heading"><div><span class="rw-eyebrow">Conexões e capacidade</span><h4>Armazenamento Cloudflare R2</h4><p>Conecte buckets, escolha onde enviar e acompanhe o uso real da conta.</p></div><button id="r2-add-profile" type="button" class="rw-btn">+ Adicionar armazenamento</button></div>
+<div class="rw-heading"><div><span class="rw-eyebrow">Conexões e capacidade</span><h4>Armazenamento Cloudflare R2</h4><p>Conecte buckets, escolha onde enviar e acompanhe o uso real da conta.</p></div><button id="r2-add-profile" type="button" class="rw-btn">+ Adicionar conta R2</button></div>
 <div class="rw-field"><label for="r2-settings-selected">Armazenamento para os próximos envios</label><select id="r2-settings-selected" class="rw-input" data-r2-selector></select></div><div class="rw-r2-meter"><div class="rw-inline" style="justify-content:space-between"><strong id="r2-meter-name-config">R2 principal</strong><button type="button" data-r2-refresh class="rw-r2-refresh" title="Conferir uso real">↻</button></div><span id="r2-meter-text-config">Uso ainda não conferido</span><div class="rw-progress-track"><div id="r2-meter-fill-config" class="rw-progress-fill" style="width:0%"></div></div><small id="r2-meter-status-config">Bloqueio em 9,8 GB</small></div>
-<p class="rw-hint">Versão 2026.10.22-publicacao.1 · Administrador autorizado · UID: <code id="admin-current-uid"></code></p><div class="rw-file-notice" style="margin:14px 0">A conexão é recuperada de uma configuração privada após o login do administrador. As chaves não ficam no HTML publicado e não são liberadas ao cliente. Você também pode recuperar uma conexão antiga usando seu HTML anterior.</div><button id="r2-recover-button" type="button" class="rw-btn rw-btn-secondary">Recuperar conexão salva</button><button id="r2-import-button" type="button" class="rw-btn rw-btn-secondary">Importar conexão do código anterior</button><input type="file" id="r2-import-file" accept=".html,.htm,text/html" hidden><p id="r2-settings-message" class="rw-hint" role="status"></p><div id="r2-storage-usage-list" style="margin:14px 0"></div><div id="r2-storage-profiles" class="rw-storage-profiles"></div>
+<p class="rw-hint">Versão 2026.10.23-r2.1 · Administrador autorizado · UID: <code id="admin-current-uid"></code></p><div class="rw-file-notice" style="margin:14px 0">A conexão é recuperada de uma configuração privada após o login do administrador. As chaves não ficam no HTML publicado e não são liberadas ao cliente. Importe um arquivo JSON de conexão R2 ou recupere os dados do HTML anterior. A importação apenas preenche o formulário; use Testar e salvar para adicionar. A conexão selecionada continua sendo o destino dos envios.</div><button id="r2-recover-button" type="button" class="rw-btn rw-btn-secondary">Recuperar conexão salva</button><button id="r2-import-button" type="button" class="rw-btn rw-btn-secondary">Importar conexão R2</button><input type="file" id="r2-import-file" accept=".json,application/json,.html,.htm,text/html" hidden><p id="r2-settings-message" class="rw-hint" role="status"></p><div id="r2-storage-usage-list" style="margin:14px 0"></div><div id="r2-storage-profiles" class="rw-storage-profiles"></div>
 <div class="rw-file-notice">A franquia é compartilhada pelos buckets da mesma conta. O limite preventivo padrão é 9,8 GB (9.800.000.000 bytes). O uso inclui todos os arquivos dos buckets monitorados, mesmo fora do Render. Se a descoberta de buckets não estiver disponível, cadastre os outros buckets desta conta abaixo. Envios externos ao Render não são controlados por este painel.</div>
 <details class="rw-hint" style="margin-top:14px"><summary>Conexão, segurança e cobrança</summary><p>Access Key ID identifica a credencial; Secret Access Key deve ficar protegida. As conexões são sincronizadas em uma configuração privada, acessível apenas ao administrador autorizado, e recuperadas após o login. As chaves não ficam no HTML publicado nem são liberadas ao portal do cliente.</p><p>A medição mostra os bytes atuais. A cobrança do R2 usa GB-mês e também considera operações. O bloqueio de capacidade não apaga cobranças anteriores nem garante custo zero. <a href="https://developers.cloudflare.com/r2/pricing/" target="_blank" rel="noopener noreferrer" style="color:#e8bf70">Ver regras de cobrança</a>.</p><p>A credencial precisa permitir listar, gravar e excluir objetos e conferir envios incompletos. Configure CORS com GET, HEAD, PUT e DELETE para o domínio administrativo. O bloqueio de 9,8 GB vale para os envios feitos por este painel.</p></details>
 <div id="r2-profile-editor" class="hidden rw-profile-editor"><h4 id="r2-profile-editor-title" class="rw-section-title">Conexão R2</h4><form id="r2-profile-form">
-<div class="rw-form-grid">
-<div class="rw-field"><label for="r2-profile-bucket">Bucket Name</label><input id="r2-profile-bucket" class="rw-input" required autocomplete="off"></div>
+<div class="rw-form-grid"><div class="rw-field"><label for="r2-profile-account">ID da conta R2</label><input id="r2-profile-account" class="rw-input" required pattern="[a-fA-F0-9]{32}" minlength="32" maxlength="32" autocomplete="off"><small class="rw-hint">Copie o Account ID completo do painel R2 (32 caracteres).</small></div>
+<div class="rw-field"><label for="r2-profile-bucket">Nome do bucket R2</label><input id="r2-profile-bucket" class="rw-input" required autocomplete="off"></div>
 <div class="rw-field"><label for="r2-profile-access">Access Key ID</label><input id="r2-profile-access" type="password" class="rw-input" required autocomplete="new-password"></div>
 <div class="rw-field"><label for="r2-profile-secret">Secret Access Key</label><input id="r2-profile-secret" type="password" class="rw-input" required autocomplete="new-password"></div>
 <div class="rw-field"><label for="r2-profile-public">Public URL (Domínio Público)</label><input id="r2-profile-public" type="url" class="rw-input" required placeholder="https://pub-….r2.dev"></div></div>
-<details id="r2-profile-advanced" class="fm-advanced"><summary>Outra conta Cloudflare / opções avançadas</summary><p>Na conta já conectada, basta preencher os quatro campos acima. Uma conta diferente também precisa do endpoint S3 da conta, disponível no painel do R2. A URL pública não informa esse endpoint.</p><div class="rw-form-grid"><div class="rw-field"><label for="r2-profile-endpoint">Endpoint S3 da outra conta</label><input id="r2-profile-endpoint" type="url" class="rw-input" placeholder="https://ACCOUNT_ID.r2.cloudflarestorage.com"></div><div class="rw-field"><label for="r2-profile-account">Account ID</label><input id="r2-profile-account" class="rw-input" autocomplete="off"></div><div class="rw-field"><label for="r2-profile-name">Nome desta conexão</label><input id="r2-profile-name" class="rw-input" maxlength="80"></div><div class="rw-field"><label for="r2-profile-extras">Outros buckets da mesma conta</label><input id="r2-profile-extras" class="rw-input" placeholder="outro-bucket, backup"></div></div></details><input id="r2-profile-limit" type="hidden" value="9.8"><input id="r2-profile-capacity" type="hidden" value="10">
+<details id="r2-profile-advanced" class="fm-advanced"><summary>Opções avançadas do R2</summary><p>O endpoint S3 é gerado automaticamente pelo ID da conta R2 acima. Você pode cadastrar contas diferentes sem remover as conexões existentes.</p><div class="rw-form-grid"><div class="rw-field"><label for="r2-profile-endpoint">Endpoint S3 da conta R2</label><input id="r2-profile-endpoint" readonly type="url" class="rw-input" placeholder="https://ACCOUNT_ID.r2.cloudflarestorage.com"></div><div class="rw-field"><label for="r2-profile-name">Nome desta conexão</label><input id="r2-profile-name" class="rw-input" maxlength="80"></div><div class="rw-field"><label for="r2-profile-extras">Outros buckets da mesma conta</label><input id="r2-profile-extras" class="rw-input" placeholder="outro-bucket, backup"></div></div></details><input id="r2-profile-limit" type="hidden" value="9.8"><input id="r2-profile-capacity" type="hidden" value="10">
 <div class="rw-inline"><button type="button" id="r2-show-keys" class="rw-btn rw-btn-secondary">Mostrar / ocultar chaves</button><button type="button" id="r2-profile-cancel" class="rw-btn rw-btn-secondary">Cancelar</button><button type="submit" id="r2-profile-save" class="rw-btn">Testar e salvar conexão</button></div></form></div></section>
                 
                 <div class="gold-gradient w-full py-3 px-6 rounded shadow-lg mb-8 border border-yellow-200">
@@ -1916,23 +1916,23 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
         }
     }
     function editStorageProfile(id=null){
-        editingStorageId=id;const profile=r2Profiles.find(p=>p.id===id)||{name:'',accountId:selectedStorage().accountId||R2_ACCOUNT_ID,bucket:'',endpoint:selectedStorage().endpoint||`https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,accessKeyId:'',secretAccessKey:'',publicDomain:'',limitBytes:9800000000,capacityBytes:10000000000,extraBuckets:[]};
+        editingStorageId=id;const profile=r2Profiles.find(p=>p.id===id)||{name:'',accountId:'',bucket:'',endpoint:'',accessKeyId:'',secretAccessKey:'',publicDomain:'',limitBytes:9800000000,capacityBytes:10000000000,extraBuckets:[]};
         for(const [field,value]of Object.entries({name:profile.name,account:profile.accountId,bucket:profile.bucket,endpoint:profile.endpoint,public:profile.publicDomain,access:profile.accessKeyId,secret:profile.secretAccessKey,limit:profile.limitBytes/1e9,capacity:profile.capacityBytes/1e9,extras:(profile.extraBuckets||[]).join(', ')}))document.getElementById('r2-profile-'+field).value=value;
-        document.getElementById('r2-profile-editor').classList.remove('hidden');document.getElementById('r2-profile-advanced').open=false;document.getElementById('r2-profile-editor-title').textContent='Cloud R2';
+        document.getElementById('r2-profile-editor').classList.remove('hidden');document.getElementById('r2-profile-advanced').open=false;document.getElementById('r2-profile-editor-title').textContent=id?'Editar conexão R2':'Adicionar conta R2';
         document.getElementById('r2-profile-secret').type='password';document.getElementById('r2-profile-access').type='password';
         document.getElementById('r2-profile-editor').scrollIntoView({behavior:'smooth',block:'nearest'});
     }
     document.getElementById('r2-add-profile').onclick=()=>editStorageProfile();
     document.getElementById('r2-profile-cancel').onclick=()=>document.getElementById('r2-profile-editor').classList.add('hidden');
-    document.getElementById('r2-profile-account').addEventListener('input',event=>{if(/^[a-f0-9]{32}$/i.test(event.target.value.trim()))document.getElementById('r2-profile-endpoint').value=`https://${event.target.value.trim()}.r2.cloudflarestorage.com`;});
+    document.getElementById('r2-profile-account').addEventListener('input',event=>{const account=event.target.value.trim().toLowerCase();document.getElementById('r2-profile-endpoint').value=/^[a-f0-9]{32}$/.test(account)?`https://${account}.r2.cloudflarestorage.com`:'';});
     document.getElementById('r2-show-keys').onclick=()=>{for(const id of['r2-profile-access','r2-profile-secret']){const input=document.getElementById(id);input.type=input.type==='password'?'text':'password';}};
     document.getElementById('r2-profile-form').addEventListener('submit',async event=>{
         event.preventDefault();if(bulkUploading||adjustmentUploadBusy||r2ActiveUploads)return showToast('Aguarde os envios terminarem.','info');
         const value=field=>document.getElementById('r2-profile-'+field).value.trim(),old=r2Profiles.find(p=>p.id===editingStorageId);
         try{
-            const endpointValue=value('endpoint'),endpointAccount=endpointValue?new URL(endpointValue).hostname.split('.')[0]:'';const accountId=(endpointAccount||value('account')||selectedStorage().accountId||R2_ACCOUNT_ID).toLowerCase();if(!/^[a-f0-9]{32}$/.test(accountId))throw new Error('Para uma conta diferente, informe o endpoint S3 em Opções avançadas.');
+            const accountId=value('account').toLowerCase();if(!/^[a-f0-9]{32}$/.test(accountId))throw new Error('O ID da conta R2 precisa ter 32 caracteres hexadecimais. Copie o ID completo do painel R2.');
             const bucket=value('bucket');if(!/^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(bucket))throw new Error('Confira o nome do bucket.');
-            const endpoint=new URL(value('endpoint')||`https://${accountId}.r2.cloudflarestorage.com`),publicUrl=new URL(value('public'));
+            const endpoint=new URL(`https://${accountId}.r2.cloudflarestorage.com`),publicUrl=new URL(value('public'));
             if(endpoint.protocol!=='https:'||!endpoint.hostname.endsWith('.r2.cloudflarestorage.com')||!endpoint.hostname.startsWith(accountId+'.')||endpoint.username||endpoint.password||endpoint.search||endpoint.hash)throw new Error('Use o endpoint HTTPS S3 da conta R2 informada.');
             if(publicUrl.protocol!=='https:'||publicUrl.username||publicUrl.password||publicUrl.search||publicUrl.hash)throw new Error('Use uma URL pública HTTPS válida, sem parâmetros.');
             const limit=Number(value('limit').replace(',','.'))*1e9,capacity=Number(value('capacity').replace(',','.'))*1e9;
@@ -1949,11 +1949,12 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
             const profile={id,name:value('name')||bucket,accountId,bucket,endpoint:endpointUrl,publicDomain,accessKeyId:value('access'),secretAccessKey:value('secret'),limitBytes:Math.round(limit),capacityBytes:Math.round(capacity),extraBuckets:[...new Set(value('extras').split(',').map(s=>s.trim()).filter(Boolean))],aliases:old&&!identityChanged?[...new Set([...(old.aliases||[]),...(old.publicDomain!==publicDomain?[old.publicDomain]:[])])]:[],archived:old&&!identityChanged?!!old.archived:false};
             const button=document.getElementById('r2-profile-save');button.disabled=true;button.textContent='Testando conexão…';
             try{await storageClient(profile).send(new ListObjectsV2Command({Bucket:bucket,MaxKeys:1}));}finally{button.disabled=false;button.textContent='Testar e salvar conexão';}
+            const previousProfiles=r2Profiles;
             if(identityChanged){r2Profiles=r2Profiles.map(p=>p.id===old.id?{...p,archived:true,name:p.name+' · anterior'}:p);r2Profiles.push(profile);}
-            else if(old)r2Profiles=r2Profiles.map(p=>p.id===id?profile:p);else r2Profiles.push(profile);
+            else if(old)r2Profiles=r2Profiles.map(p=>p.id===id?profile:p);else r2Profiles=[...r2Profiles,profile];
             // O limite é da conta inteira, compartilhado por seus buckets cadastrados.
             r2Profiles=r2Profiles.map(p=>p.accountId===accountId?{...p,limitBytes:profile.limitBytes,capacityBytes:profile.capacityBytes}:p);
-            await savePrivateStorageProfiles();persistStorageProfiles();document.getElementById('r2-profile-editor').classList.add('hidden');
+            try{await savePrivateStorageProfiles();}catch(error){r2Profiles=previousProfiles;throw error;}persistStorageProfiles();document.getElementById('r2-profile-editor').classList.add('hidden');
             showToast('Conexão salva na configuração privada do administrador. Os próximos envios usarão o bucket selecionado.');refreshStorageUsage();
         }catch(error){showToast('Não foi possível salvar: '+storageConnectionMessage(error),'error');}
     });
@@ -1964,15 +1965,25 @@ const ROOT_FOLDER_NAME = "A_e_M_Producoes";
     document.getElementById('r2-import-file').onchange=async event=>{
         const file=event.target.files?.[0];if(!file)return;
         try{
-            if(file.size>5*1024*1024)throw new Error('Escolha o HTML administrativo anterior, com até 5 MB.');
+            if(file.size>5*1024*1024)throw new Error('Escolha um JSON de conexão R2 ou HTML anterior com até 5 MB.');
             const source=await file.text();
-            const read=name=>{const match=source.match(new RegExp('const\\s+'+name+'\\s*=\\s*(["\\\'])([^"\\\'\\r\\n]+)\\1\\s*;'));return match?.[2]||'';};
-            const imported={accountId:read('R2_ACCOUNT_ID'),bucket:read('R2_BUCKET_NAME'),publicDomain:read('R2_PUBLIC_DOMAIN').replace(/\/$/,''),accessKeyId:read('R2_ACCESS_KEY_ID'),secretAccessKey:read('R2_SECRET_ACCESS_KEY')};
-            if(!/^[a-f0-9]{32}$/i.test(imported.accountId)||!imported.bucket||!imported.accessKeyId||!imported.secretAccessKey)throw new Error('Não encontrei uma conexão completa neste arquivo. Use o HTML administrativo anterior ou preencha as chaves em Editar conexão.');
-            if(new URL(imported.publicDomain).protocol!=='https:')throw new Error('A URL pública da conexão deve usar HTTPS.');
-            const existing=r2Profiles.find(p=>p.accountId===imported.accountId&&p.bucket===imported.bucket),profile={...(existing||ORIGINAL_R2_PROFILE),...imported,id:existing?.id||'r2-import-'+newFileId(),name:existing?.name||'R2 importado',archived:false,endpoint:`https://${imported.accountId}.r2.cloudflarestorage.com`,aliases:[...new Set([...(existing?.aliases||[]),...(existing?.publicDomain&&existing.publicDomain!==imported.publicDomain?[existing.publicDomain]:[])])]};
-            r2Profiles=existing?r2Profiles.map(p=>p.id===existing.id?profile:p):[...r2Profiles,profile];persistStorageProfiles();renderStorageProfileList();await refreshStorageUsage();
-            await savePrivateStorageProfiles();showToast('Conexão recuperada e salva na configuração privada. O HTML foi lido localmente e não foi enviado.');
+            let imported;
+            if(source.trimStart().startsWith('{')){
+                const data=JSON.parse(source);
+                if(data.provider&&data.provider!=='r2')throw new Error('Somente conexões R2 são aceitas.');
+                imported=data;
+            }else{
+                const read=name=>{const match=source.match(new RegExp('const\\s+'+name+'\\s*=\\s*(["\\\'])([^"\\\'\\r\\n]+)\\1\\s*;'));return match?.[2]||'';};
+                imported={accountId:read('R2_ACCOUNT_ID'),bucket:read('R2_BUCKET_NAME'),publicDomain:read('R2_PUBLIC_DOMAIN'),accessKeyId:read('R2_ACCESS_KEY_ID'),secretAccessKey:read('R2_SECRET_ACCESS_KEY')};
+            }
+            for(const key of ['accountId','bucket','publicDomain','accessKeyId','secretAccessKey'])if(typeof imported[key]!=='string'||!imported[key].trim())throw new Error('Arquivo incompleto: confira ID da conta, bucket, URL pública e as duas chaves.');
+            const account=imported.accountId.trim().toLowerCase();
+            const existing=r2Profiles.find(p=>p.accountId===account&&p.bucket===imported.bucket.trim());
+            editStorageProfile(existing?.id||null);
+            for(const [field,key] of Object.entries({account:'accountId',bucket:'bucket',public:'publicDomain',access:'accessKeyId',secret:'secretAccessKey'}))document.getElementById('r2-profile-'+field).value=imported[key].trim();
+            document.getElementById('r2-profile-name').value=typeof imported.name==='string'?imported.name:(existing?.name||imported.bucket.trim());
+            document.getElementById('r2-profile-account').dispatchEvent(new Event('input'));
+            showToast(/^[a-f0-9]{32}$/.test(account)?'Dados importados. Confira e clique em Testar e salvar conexão. O destino atual foi mantido.':'Dados importados, mas o ID da conta está incompleto: precisa ter 32 caracteres. Corrija antes de testar.',/^[a-f0-9]{32}$/.test(account)?'info':'error');
         }catch(error){showToast(error.message||'Não foi possível importar a conexão.','error');}
         finally{event.target.value='';}
     };
